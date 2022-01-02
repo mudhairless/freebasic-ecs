@@ -18,6 +18,7 @@ public sub EntityList.AddEntity(byval e as Entity ptr)
     eli->_next = 0
     if(this._last <> 0) then   
         this._last->_next = eli
+        this._last = eli
     else
         this._list = eli
         this._last = eli
