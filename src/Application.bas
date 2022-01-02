@@ -3,6 +3,8 @@
 public constructor Application()
     this.all_entities = new EntityList
     this.all_resources = new ResourceList
+    this.systems = new SystemList
+    this.exit_sentinel = 0
 end constructor
 
 public destructor Application()
@@ -24,3 +26,44 @@ end sub
 public function Application.GetResource(byref rn as string) as any ptr
     return this.all_resources->FindResource(rn)
 end function
+
+public sub Application.runApplication()
+    this.exit_sentinel = 0
+
+    'run startup systems
+    var _next = this.systems->_s_list
+    if(_next <> 0) then
+        do
+            var _cur = _next
+            _cur->_system->_call(@this, 0)
+            _next = _cur->_next
+        loop until _next = 0
+    end if
+
+    this.last_time = timer
+    this.curTime = this.last_time
+    this.deltaTime = 0f
+
+    do while this.exit_sentinel = 0
+        this.last_time = this.curTime
+        this.curTime = timer
+        this.deltaTime = this.curTime - this.last_time
+
+        var _next = this.systems->_list
+        if(_next <> 0) then
+            do
+                var _cur = _next
+                if(_cur->_system->minDelay > (this.curTime - _cur->_system->last_run)) then
+                    _cur->_system->_call(@this, this.deltaTime)
+                    _cur->_system->last_run = this.curTime
+                end if
+                _next = _cur->_next
+            loop until _next = 0
+        end if
+        sleep 1,1
+    loop
+end sub
+
+public sub Application.exitApplication()
+    this.exit_sentinel = 1
+end sub
