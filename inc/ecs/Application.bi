@@ -10,7 +10,7 @@ type Application
     declare destructor()
     declare sub AddResource(byval rn as string, byval r as any ptr, byval destroy as ResourceDestructor)
     declare function GetResource(byref rn as string) as any ptr
-    declare function AddEntity() as Entity ptr
+    declare function AddEntity(byref _name as string) as Entity ptr
     as EntityList ptr all_entities
 
     private:

@@ -25,6 +25,18 @@ public sub EntityList.AddEntity(byval e as Entity ptr)
     end if
 end sub
 
+public function EntityList.FindEntity(byref ename as string) as Entity ptr
+    var _next = this._list
+    do
+        var _cur = _next
+        _next = _next->_next
+        if(_cur->_entity->_name = ename) then
+            return _cur->_entity
+        end if
+    loop until _next = 0
+    return 0
+end function
+
 public sub EntityList.RemoveEntity(byval e as Entity ptr)
     if(this._list <> 0) then
         

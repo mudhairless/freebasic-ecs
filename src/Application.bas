@@ -10,8 +10,9 @@ public destructor Application()
     delete this.all_entities
 end destructor
 
-public function Application.AddEntity() as Entity ptr
+public function Application.AddEntity(byref _name as string) as Entity ptr
     dim as Entity ptr e = new Entity
+    e->_name = _name
     this.all_entities->AddEntity(e)
     return e
 end function

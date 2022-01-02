@@ -14,6 +14,7 @@ type EntityListSearchFunction as function(byval e as Entity ptr, byval d as any 
 
 type EntityList
     public:
+    declare function FindEntity(byref ename as string) as Entity ptr
     declare function Search(byval sf as EntityListSearchFunction, byval _data as any ptr) as EntityList ptr
     declare function WithComponent(byref c as string) as EntityList ptr
     declare sub RemoveEntity(byval e as Entity ptr)

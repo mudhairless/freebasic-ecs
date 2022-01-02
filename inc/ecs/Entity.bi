@@ -14,6 +14,7 @@ type Entity extends Object
 
     declare static sub RegisterComponent(byref c_name as const string, byval c as Component ptr)
 
+    _name as string
     refs as long
     private:
     _components(15) as Component ptr
