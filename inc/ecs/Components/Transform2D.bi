@@ -5,6 +5,9 @@
 
 type Transform2D extends Component
     as single x, y
+
+    declare constructor()
+    declare function create(byref cname as const string) as Component ptr override
 end type
 
 #endif

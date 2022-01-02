@@ -5,7 +5,9 @@ type Component extends Object
     public:
         cname as string
         _requires(10) as string
-        declare function create(byref cname as const string) as Component ptr
+        declare constructor ()
+        declare constructor (byref cname as const string)
+        declare virtual function create(byref cname as const string) as Component ptr
 
 end type
 
