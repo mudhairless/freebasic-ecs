@@ -18,4 +18,6 @@ type Application
 
 end type
 
+#define GET_RESOURCE (e, t) (cast(t ptr, (e).GetResource(#t)))
+
 #endif
