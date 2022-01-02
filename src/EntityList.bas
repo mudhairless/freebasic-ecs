@@ -37,6 +37,17 @@ public function EntityList.FindEntity(byref ename as string) as Entity ptr
     return 0
 end function
 
+private function EntityByName(byval e as Entity ptr, byval c as any ptr) as long
+    if(e->_name = (*(cast(zstring ptr, c)))) then
+        return 1
+    end if
+    return 0
+end function
+
+public function EntityList.FindAllEntities(byref ename as string) as EntityList ptr
+    return this.Search(@EntityByName, strptr(ename))
+end function
+
 public sub EntityList.RemoveEntity(byval e as Entity ptr)
     if(this._list <> 0) then
         
