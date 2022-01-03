@@ -29,6 +29,10 @@ sub sys_setup(byval _app as any ptr, byval _ud as any ptr, byval _data as any pt
     var pdraw = ADD_COMPONENT(player, Drawable)
     pdraw->r = 10
 
+    var pc = new PaintColor
+    pc->_color = &hFFFF00
+    app->AddResource("PaintColor", pc, 0)
+
     screenres 640, 480, 32
 end sub
 
@@ -96,10 +100,6 @@ end sub
 
 
 var app = new Application()
-
-var pc = new PaintColor
-pc->_color = &hFFFF00
-app->AddResource("PaintColor", pc, 0)
 
 app->systems->AddStartupSystem(@sys_setup, 0)
 app->systems->AddComponentSystem("Drawable", @drawable_system, 0)
