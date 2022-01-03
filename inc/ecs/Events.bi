@@ -27,12 +27,15 @@ type EventSystem
     public:
     declare function GetEventHandler(byref ev_name as string) as EventHandler ptr
     declare sub AddEvent(byref ev_name as string)
+    declare function TriggerEvent(byref ev_name as string, byval ev_data as any ptr) as long
     declare function TriggerEvent(byref ev_name as string, byval src as any ptr, byval ev_data as any ptr) as long
     declare sub SetApplication(byval a as any ptr)
+    declare sub SetSource(byval s as any ptr)
     private:
     _list as EventHandlerListItem ptr
     _last as EventHandlerListItem ptr
     _app as any ptr
+    _src as any ptr
 end type
 
 #endif

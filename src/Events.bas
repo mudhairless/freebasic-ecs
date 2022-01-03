@@ -68,6 +68,14 @@ sub EventSystem.AddEvent(byref ev_name as string)
     end if
 end sub
 
+function EventSystem.TriggerEvent(byref ev_name as string, byval ev_data as any ptr) as long
+    var handler = this.GetEventHandler(ev_name)
+    if(handler <> 0) then
+        return handler->trigger(this._app, this._src, ev_data)
+    end if
+    return 1
+end function
+
 function EventSystem.TriggerEvent(byref ev_name as string, byval src as any ptr, byval ev_data as any ptr) as long
     var handler = this.GetEventHandler(ev_name)
     if(handler <> 0) then
@@ -78,4 +86,8 @@ end function
 
 sub EventSystem.SetApplication(byval a as any ptr)
     this._app = a
+end sub
+
+sub EventSystem.SetSource(byval s as any ptr)
+    this._src = s
 end sub

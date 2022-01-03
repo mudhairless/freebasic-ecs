@@ -22,6 +22,7 @@ public function Application.AddEntity(byref _name as string) as Entity ptr
     dim as Entity ptr e = new Entity
     e->_name = _name
     e->Events->SetApplication(@this)
+    e->Events->SetSource(e)
     this.all_entities->AddEntity(e)
     return e
 end function
@@ -76,6 +77,6 @@ public sub Application.runApplication()
 end sub
 
 public sub Application.exitApplication()
-    var doExit = this._events.TriggerEvent("ApplicationExit", 0, 0)
-    this.exit_sentinel = iif(doExit <> 0, 0, 1)
+    var doExit = this._events.TriggerEvent("ApplicationExit", 0)
+    this.exit_sentinel = iif(doExit <> 0, 1, 0)
 end sub
