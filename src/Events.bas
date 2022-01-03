@@ -38,6 +38,12 @@ sub EventHandler.removeListener(byval f as EventHandlerMethod)
     next a
 end sub
 
+sub EventHandler.removeAllListeners()
+    for a as long = 0 to ubound(this._listeners)
+        this._listeners(a) = 0
+    next a
+end sub
+
 function EventSystem.GetEventHandler(byref ev_name as string) as EventHandler ptr
     var _next = this._list
     do
@@ -91,3 +97,26 @@ end sub
 sub EventSystem.SetSource(byval s as any ptr)
     this._src = s
 end sub
+
+function EventSystem.AddListener(byref ev_name as string, byval f as EventHandlerMethod) as long
+    var handler = this.GetEventHandler(ev_name)
+    if(handler <> 0) then
+        return handler->addListener(f)
+    end if
+    return 0
+end function
+
+sub EventSystem.RemoveListener(byref ev_name as string, byval f as EventHandlerMethod)
+    var handler = this.GetEventHandler(ev_name)
+    if(handler <> 0) then
+        handler->removeListener(f)
+    end if
+end sub
+
+sub EventSystem.RemoveAllListeners(byref ev_name as string)
+    var handler = this.GetEventHandler(ev_name)
+    if(handler <> 0) then
+        handler->removeAllListeners()
+    end if
+end sub
+

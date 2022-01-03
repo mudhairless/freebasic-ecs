@@ -12,6 +12,7 @@ type EventHandler
 
     declare function addListener(byval f as EventHandlerMethod) as long
     declare sub removeListener(byval f as EventHandlerMethod)
+    declare sub removeAllListeners()
 
     private:
     _EventName as string
@@ -27,6 +28,9 @@ type EventSystem
     public:
     declare function GetEventHandler(byref ev_name as string) as EventHandler ptr
     declare sub AddEvent(byref ev_name as string)
+    declare function AddListener(byref ev_name as string, byval f as EventHandlerMethod) as long
+    declare sub RemoveListener(byref ev_name as string, byval f as EventHandlerMethod)
+    declare sub RemoveAllListeners(byref ev_name as string)
     declare function TriggerEvent(byref ev_name as string, byval ev_data as any ptr) as long
     declare function TriggerEvent(byref ev_name as string, byval src as any ptr, byval ev_data as any ptr) as long
     declare sub SetApplication(byval a as any ptr)
