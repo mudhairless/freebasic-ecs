@@ -4,6 +4,7 @@
 #include once "ecs/EntityList.bi"
 #include once "ecs/Resource.bi"
 #include once "ecs/Systems.bi"
+#include once "ecs/Events.bi"
 
 type Application
     public:
@@ -17,6 +18,8 @@ type Application
     declare sub runApplication()
     declare sub exitApplication()
 
+    declare property Events() as EventSystem ptr
+
     as SystemList ptr systems
 
     as EntityList ptr all_entities
@@ -26,6 +29,7 @@ type Application
     as double curTime
     as double deltaTime
     as long exit_sentinel
+    as EventSystem _events
     as ResourceList ptr all_resources
 
 end type

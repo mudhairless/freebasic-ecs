@@ -5,6 +5,8 @@ public constructor Application()
     this.all_resources = new ResourceList
     this.systems = new SystemList
     this.exit_sentinel = 0
+    this._events.SetApplication(@this)
+    this._events.AddEvent("ApplicationExit")
 end constructor
 
 public destructor Application()
@@ -12,9 +14,14 @@ public destructor Application()
     delete this.all_entities
 end destructor
 
+public property Application.Events() as EventSystem ptr
+    return @(this._events)
+end property
+
 public function Application.AddEntity(byref _name as string) as Entity ptr
     dim as Entity ptr e = new Entity
     e->_name = _name
+    e->Events->SetApplication(@this)
     this.all_entities->AddEntity(e)
     return e
 end function
@@ -69,5 +76,6 @@ public sub Application.runApplication()
 end sub
 
 public sub Application.exitApplication()
-    this.exit_sentinel = 1
+    var doExit = this._events.TriggerEvent("ApplicationExit", 0, 0)
+    this.exit_sentinel = doExit
 end sub

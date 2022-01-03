@@ -2,11 +2,15 @@
 
  dim Entity._ComponentRegistry as ComponentRegistry
 
+ property Entity.Events() as EventSystem ptr
+    return @(this._events)
+ end property
+
  function Entity.AddComponent(byref c_name as const string) as Component ptr
     var _len = ubound(this._components)
     var baseComponent = Entity._ComponentRegistry.GetComponent(c_name)
     if (baseComponent <> 0) then
-        for n as integer = 0 to 9
+        for n as integer = 0 to ubound(baseComponent->_requires)
             if(baseComponent->_requires(n) <> "") then
                 this.AddComponent(baseComponent->_requires(n))
             end if
@@ -18,6 +22,7 @@
                 end if
             else
                 this._components(i) = baseComponent
+                this._components(i)->register(@this)
                 return baseComponent
             end if
         next i
@@ -40,6 +45,7 @@
     for i as integer = 0 to ubound(this._components)
         if(this._components(i) <> 0) then
             if (this._components(i)->cname = c_name) then
+                this._components(i)->deregister(@this)
                 delete this._components(i)
                 this._components(i) = 0
             end if

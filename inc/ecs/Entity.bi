@@ -3,6 +3,7 @@
 
 #include once "ecs/Component.bi"
 #include once "ecs/ComponentRegistry.bi"
+#include once "ecs/Events.bi"
 
 type Entity extends Object
     public:
@@ -15,9 +16,12 @@ type Entity extends Object
 
     declare static sub RegisterComponent(byref c_name as const string, byval c as Component ptr)
 
+    declare property Events() as EventSystem ptr
+
     _name as string
     refs as long
     private:
+    _events as EventSystem
     _components(15) as Component ptr
     static _ComponentRegistry as ComponentRegistry
 end type
