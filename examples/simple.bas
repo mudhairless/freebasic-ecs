@@ -58,7 +58,7 @@ sub drawable_system(byval _app as any ptr, byval _ud as any ptr, byval _data as 
 end sub
 
 sub input_handler(byval _app as any ptr, byval _ud as any ptr, byval _data as any ptr, byval deltaTime as single)
-    
+    var app = GET_APP(_app)
     var _next = (cast(EntityList ptr, _data))->_list
     
     if(_next <> 0) then
@@ -73,7 +73,19 @@ sub input_handler(byval _app as any ptr, byval _ud as any ptr, byval _data as an
                     If MultiKey(SC_RIGHT) And _loc->x < 640 Then _loc-> x = _loc->x + (150 * deltaTime)
                     If MultiKey(SC_UP   ) And _loc->y >   0 Then _loc->y = _loc->y - (150 * deltaTime)
                     If MultiKey(SC_DOWN ) And _loc->y < 480 Then _loc->y = _loc->y + (150 * deltaTime)
-                    If MultiKey(SC_ESCAPE) then GET_APP(_app)->exitApplication()
+                    If MultiKey(SC_ESCAPE) then app->exitApplication()
+                    If MultiKey(SC_X) then 
+                        var pc = GET_RESOURCE(app, PaintColor)
+                        pc->_color = &hFF0000
+                    end if
+                    If MultiKey(SC_C) then 
+                        var pc = GET_RESOURCE(app, PaintColor)
+                        pc->_color = &h0000FF
+                    end if
+                    If MultiKey(SC_Z) then 
+                        var pc = GET_RESOURCE(app, PaintColor)
+                        pc->_color = &hFFFF00
+                    end if
                 end if
                 _next = _cur->_next
             end if
