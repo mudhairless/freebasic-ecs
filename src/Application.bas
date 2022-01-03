@@ -77,5 +77,5 @@ end sub
 
 public sub Application.exitApplication()
     var doExit = this._events.TriggerEvent("ApplicationExit", 0, 0)
-    this.exit_sentinel = doExit
+    this.exit_sentinel = iif(doExit <> 0, 0, 1)
 end sub
