@@ -12,15 +12,11 @@ enum SystemType explicit
     SystemStartup
 end enum
 
-union SystemData
-    as EntityListSearchFunction search_function
-    as zstring ptr neededComponents
-    as zstring ptr namedEntities
-end union
-
 type SystemWrapper
     as SystemType _type
-    as SystemData _data
+    as EntityListSearchFunction search_function
+    as string neededComponents
+    as string namedEntities
     as any ptr _user_data
     as long runsPerSecond
     as single minDelay

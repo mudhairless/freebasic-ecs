@@ -72,15 +72,23 @@ public sub EntityList.RemoveEntity(byval e as Entity ptr)
 end sub
 
 public function EntityList.Search(byval searchFunction as EntityListSearchFunction, byval _data as any ptr) as EntityList ptr
+    
     var outList = new EntityList
     var _next = this._list
     do
         var _cur = _next
         _next = _next->_next
+        
+        
         if(searchFunction(_cur->_entity, _data) <> 0) then
+            
             outList->AddEntity(_cur->_entity)
+        else
+            
         end if
     loop until _next = 0
+    
+        
     return outList
 end function
 

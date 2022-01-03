@@ -22,7 +22,7 @@ type EntityList
     declare sub AddEntity(byval e as Entity ptr)
     declare destructor()
 
-    private:
+    'private:
     as EntityListItem ptr _list
     as EntityListItem ptr _last
 end type

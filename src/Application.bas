@@ -29,7 +29,7 @@ end function
 
 public sub Application.runApplication()
     this.exit_sentinel = 0
-
+    
     'run startup systems
     var _next = this.systems->_s_list
     if(_next <> 0) then
@@ -43,19 +43,23 @@ public sub Application.runApplication()
     this.last_time = timer
     this.curTime = this.last_time
     this.deltaTime = 0f
-
+    
+   
     do while this.exit_sentinel = 0
         this.last_time = this.curTime
         this.curTime = timer
         this.deltaTime = this.curTime - this.last_time
 
-        var _next = this.systems->_list
+        _next = this.systems->_list
+
         if(_next <> 0) then
             do
                 var _cur = _next
-                if(_cur->_system->minDelay > (this.curTime - _cur->_system->last_run)) then
+                if((this.curTime - _cur->_system->last_run) > _cur->_system->minDelay) then
+
                     _cur->_system->_call(@this, this.deltaTime)
                     _cur->_system->last_run = this.curTime
+                
                 end if
                 _next = _cur->_next
             loop until _next = 0

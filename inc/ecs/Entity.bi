@@ -9,6 +9,7 @@ type Entity extends Object
     declare destructor()
 
     declare function AddComponent(byref c_name as const string) as Component ptr
+    'declare function HasComponent(byref c_name as const string) as long
     declare function GetComponent(byref c_name as const string) as Component ptr
     declare sub RemoveComponent(byref c_name as const string)
 
@@ -21,8 +22,14 @@ type Entity extends Object
     static _ComponentRegistry as ComponentRegistry
 end type
 
-#define GET_COMPONENT (e, t) (cast(t ptr, (e).GetComponent(#t)))
-#define ADD_COMPONENT (e, t) (cast(t ptr, (e).AddComponent(#t)))
-#define REM_COMPONENT (e, t) ((e).RemoveComponent(#t))
+#macro GET_COMPONENT (e, t) 
+(cast(t ptr, (e)->GetComponent(#t)))
+#endmacro
+#macro ADD_COMPONENT (e, t) 
+(cast(t ptr, (e)->AddComponent(#t)))
+#endmacro
+#macro REM_COMPONENT (e, t) 
+((e)->RemoveComponent(#t))
+#endmacro
 
 #endif

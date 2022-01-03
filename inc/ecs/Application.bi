@@ -30,6 +30,12 @@ type Application
 
 end type
 
-#define GET_RESOURCE (e, t) (cast(t ptr, (e).GetResource(#t)))
+#macro GET_RESOURCE (e, t) 
+(cast(t ptr, (e).GetResource(#t)))
+#endmacro 
+
+#macro GET_APP (x) 
+(cast( Application ptr, x))
+#endmacro
 
 #endif
