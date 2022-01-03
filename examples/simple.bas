@@ -11,6 +11,10 @@ type Drawable extends Component
     as long r
 end type
 
+type PaintColor
+    as long _color
+end type
+
 Entity.RegisterComponent("Location", new Location())
 Entity.RegisterComponent("Drawable", new Drawable())
 
@@ -29,7 +33,9 @@ sub sys_setup(byval _app as any ptr, byval _ud as any ptr, byval _data as any pt
 end sub
 
 sub drawable_system(byval _app as any ptr, byval _ud as any ptr, byval _data as any ptr, byval deltaTime as single)
-    
+    var app = GET_APP(_app)
+    var pc = GET_RESOURCE(app, PaintColor) 'shortcut when the resource name matches the type name
+
     screenlock
     cls
     var _next = (cast(EntityList ptr, _data))->_list
@@ -41,8 +47,8 @@ sub drawable_system(byval _app as any ptr, byval _ud as any ptr, byval _data as 
                 var _drawable = GET_COMPONENT(_entity, Drawable)
                 var _loc = GET_COMPONENT(_entity, Location)
                 if(_loc <> 0 and _drawable <> 0) then
-                    circle (clng(_loc->x), clng(_loc->y)), _drawable->r, &hFFFFFF
-                    paint (clng(_loc->x), clng(_loc->y)), &hFFFFFF, &hFFFFFF
+                    circle (clng(_loc->x), clng(_loc->y)), _drawable->r, pc->_color
+                    paint (clng(_loc->x), clng(_loc->y)), pc->_color, pc->_color
                 end if
                 _next = _cur->_next
             end if
@@ -78,6 +84,10 @@ end sub
 
 
 var app = new Application()
+
+var pc = new PaintColor
+pc->_color = &hFFFF00
+app->AddResource("PaintColor", pc, 0)
 
 app->systems->AddStartupSystem(@sys_setup, 0)
 app->systems->AddComponentSystem("Drawable", @drawable_system, 0)

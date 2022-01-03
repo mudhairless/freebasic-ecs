@@ -8,7 +8,9 @@ end constructor
 destructor ResourceListItem()
     this._resource->refs -= 1
     if(this._resource->refs = 0) then
-        this._resource->resource_destroy(this._resource->resource_data)
+        if(this._resource->resource_destroy <> 0) then
+            this._resource->resource_destroy(this._resource->resource_data)
+        end if
     end if
 end destructor
 

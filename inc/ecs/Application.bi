@@ -31,7 +31,7 @@ type Application
 end type
 
 #macro GET_RESOURCE (e, t) 
-(cast(t ptr, (e).GetResource(#t)))
+(cast(t ptr, (e)->GetResource(#t)))
 #endmacro 
 
 #macro GET_APP (x) 
