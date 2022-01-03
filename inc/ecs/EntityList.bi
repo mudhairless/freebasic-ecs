@@ -22,8 +22,17 @@ type EntityList
     declare sub AddEntity(byval e as Entity ptr)
     declare destructor()
 
+    declare sub ResetIterator()
+    declare function IteratorNext() as Entity ptr
+
     'private:
+    as EntityListItem ptr _ptr
     as EntityListItem ptr _list
     as EntityListItem ptr _last
 end type
+
+#macro GET_ENTLIST(l)
+    (cast(EntityList ptr, l))
+#endmacro
+
 #endif

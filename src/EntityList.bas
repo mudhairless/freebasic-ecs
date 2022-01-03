@@ -12,8 +12,25 @@ public destructor EntityListItem()
     end if
 end destructor
 
+public sub EntityList.ResetIterator()
+    this._ptr = 0
+end sub
+
+public function EntityList.IteratorNext() as Entity ptr
+    if(this._ptr = 0) then  
+        this._ptr = this._list
+    else
+        this._ptr = this._ptr->_next
+    end if
+
+    if(this._ptr <> 0) then
+        return this._ptr->_entity
+    end if
+
+    return 0
+end function
+
 public sub EntityList.AddEntity(byval e as Entity ptr)
-    
     var eli = new EntityListItem(e)
     eli->_next = 0
     if(this._last <> 0) then   
@@ -26,14 +43,17 @@ public sub EntityList.AddEntity(byval e as Entity ptr)
 end sub
 
 public function EntityList.FindEntity(byref ename as string) as Entity ptr
-    var _next = this._list
-    do
-        var _cur = _next
-        _next = _next->_next
-        if(_cur->_entity->_name = ename) then
-            return _cur->_entity
+    this.ResetIterator()
+    var _next = this.IteratorNext()
+    while (_next <> 0)
+        if(_next <> 0) then
+            if(_next->_name = ename) then
+                return _next
+            end if
+            _next = this.IteratorNext()
         end if
-    loop until _next = 0
+    wend
+    
     return 0
 end function
 
@@ -50,7 +70,6 @@ end function
 
 public sub EntityList.RemoveEntity(byval e as Entity ptr)
     if(this._list <> 0) then
-        
         dim as EntityListItem ptr _next = this._list
         dim as EntityListItem ptr _last = 0
         do
@@ -72,23 +91,19 @@ public sub EntityList.RemoveEntity(byval e as Entity ptr)
 end sub
 
 public function EntityList.Search(byval searchFunction as EntityListSearchFunction, byval _data as any ptr) as EntityList ptr
-    
     var outList = new EntityList
-    var _next = this._list
+    this.ResetIterator()
+    var _next = this.IteratorNext()
+    
     do
-        var _cur = _next
-        _next = _next->_next
-        
-        
-        if(searchFunction(_cur->_entity, _data) <> 0) then
-            
-            outList->AddEntity(_cur->_entity)
-        else
-            
+        if(_next <> 0) then
+            if(searchFunction(_next, _data) <> 0) then
+                outList->AddEntity(_next)
+            end if
+            _next = this.IteratorNext()
         end if
     loop until _next = 0
-    
-        
+
     return outList
 end function
 
