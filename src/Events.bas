@@ -1,4 +1,5 @@
 #include once "ecs/Events.bi"
+#include once "ecs/Application.bi"
 
 constructor EventHandler(byref evn as string)
     this._EventName = evn
@@ -61,6 +62,8 @@ end function
 sub EventSystem.AddEvent(byref ev_name as string)
     var h = this.GetEventHandler(ev_name)
     if(h = 0) then
+        var app = Application.GetInstance()
+        app->_log(LogLevel.Debug, "Registering Event: " & ev_name)
         var eli = new EventHandlerListItem
         eli->_handler = new EventHandler(ev_name)
         eli->_next = 0
@@ -75,18 +78,24 @@ sub EventSystem.AddEvent(byref ev_name as string)
 end sub
 
 function EventSystem.TriggerEvent(byref ev_name as string, byval ev_data as any ptr) as long
+    var app = Application.GetInstance()
     var handler = this.GetEventHandler(ev_name)
     if(handler <> 0) then
+        app->_log(LogLevel.Debug, "Triggering Event: " & ev_name)
         return handler->trigger(this._app, this._src, ev_data)
     end if
+    app->_log(LogLevel.Errors, "Event: " & ev_name & " triggered but not setup")
     return 1
 end function
 
 function EventSystem.TriggerEvent(byref ev_name as string, byval src as any ptr, byval ev_data as any ptr) as long
+    var app = Application.GetInstance()
     var handler = this.GetEventHandler(ev_name)
     if(handler <> 0) then
+        app->_log(LogLevel.Debug, "Triggering Event: " & ev_name)
         return handler->trigger(this._app, src, ev_data)
     end if
+    app->_log(LogLevel.Errors, "Event: " & ev_name & " triggered but not setup")
     return 1
 end function
 
@@ -99,23 +108,30 @@ sub EventSystem.SetSource(byval s as any ptr)
 end sub
 
 function EventSystem.AddListener(byref ev_name as string, byval f as EventHandlerMethod) as long
+    var app = Application.GetInstance()
     var handler = this.GetEventHandler(ev_name)
     if(handler <> 0) then
+        app->_log(LogLevel.Debug, "Event: " & ev_name & " registered listener")
         return handler->addListener(f)
     end if
+    app->_log(LogLevel.Errors, "Event: " & ev_name & " is not setup but listener added for it")
     return 0
 end function
 
 sub EventSystem.RemoveListener(byref ev_name as string, byval f as EventHandlerMethod)
+    var app = Application.GetInstance()
     var handler = this.GetEventHandler(ev_name)
     if(handler <> 0) then
+        app->_log(LogLevel.Debug, "Removed listener from " & ev_name)
         handler->removeListener(f)
     end if
 end sub
 
 sub EventSystem.RemoveAllListeners(byref ev_name as string)
+    var app = Application.GetInstance()
     var handler = this.GetEventHandler(ev_name)
     if(handler <> 0) then
+        app->_log(LogLevel.Debug, "Removed all listeners for " & ev_name)
         handler->removeAllListeners()
     end if
 end sub

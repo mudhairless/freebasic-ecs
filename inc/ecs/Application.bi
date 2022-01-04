@@ -6,10 +6,19 @@
 #include once "ecs/Systems.bi"
 #include once "ecs/Events.bi"
 
+enum LogLevel
+    Off
+    Info
+    Errors
+    Debug
+end enum
+
 type Application
     public:
-    declare constructor()
+    
     declare destructor()
+
+    declare static function GetInstance() as Application ptr
 
     declare sub AddResource(byval rn as string, byval r as any ptr, byval destroy as ResourceDestructor)
     declare function GetResource(byref rn as string) as any ptr
@@ -20,17 +29,25 @@ type Application
 
     declare property Events() as EventSystem ptr
 
+    declare property LoggingLevel() as LogLevel
+    declare property LoggingLevel(byval ll as LogLevel)
+    declare sub _log(byval ll as LogLevel, byref msg as string)
+
     as SystemList ptr systems
 
     as EntityList ptr all_entities
 
     private:
+    declare constructor()
+    declare sub init()
     as double last_time
     as double curTime
     as double deltaTime
     as long exit_sentinel
     as EventSystem _events
     as ResourceList ptr all_resources
+    as long debug_channel
+    as LogLevel _loggingLevel
 
 end type
 

@@ -1,5 +1,5 @@
 COMPILER = fbc
-COMPILE_OPTS = -i inc -g -w all
+COMPILE_OPTS = -i inc -g -w all -exx
 LINK_OPTS = -lib
 
 all: lib/libecs.a lib/libecs-components.a examples

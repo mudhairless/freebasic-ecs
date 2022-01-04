@@ -30,6 +30,7 @@ sub sys_setup(byval _app as any ptr, byval _ud as any ptr, byval _entities as an
     pc->_color = &hFFFF00
     app->AddResource("PaintColor", pc, 0)
 
+    sleep 1,1
     screenres 640, 480, 32
 end sub
 
@@ -85,10 +86,11 @@ sub input_handler(byval _app as any ptr, byval _ud as any ptr, byval _entities a
     wend
 end sub
 
+var app = Application.GetInstance()
+app->loggingLevel = LogLevel.Debug
+
 Entity.RegisterComponent("Location", new Location())
 Entity.RegisterComponent("Drawable", new Drawable())
-
-var app = new Application()
 
 app->systems->AddStartupSystem(@sys_setup, 0)
 app->systems->AddComponentSystem("Drawable", @drawable_system, 0)

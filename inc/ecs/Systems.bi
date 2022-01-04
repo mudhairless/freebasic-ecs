@@ -39,9 +39,15 @@ type SystemList
     declare sub AddEntitySystem(byref ename as string, byval f as SystemFunction, byval ud as any ptr, byval rps as long = 60)
     declare sub AddSystem(byval search_f as EntityListSearchFunction, byval f as SystemFunction, byval ud as any ptr, byval rps as long = 60)
 
-    
+    declare sub ResetStartupIterator()
+    declare function StartupIteratorNext() as SystemWrapper ptr
+
+    declare sub ResetIterator()
+    declare function IteratorNext() as SystemWrapper ptr
+
     as SystemListItem ptr _list
     as SystemListItem ptr _last
+    as SystemListItem ptr _ptr
     as SystemListItem ptr _s_list
     as SystemListItem ptr _s_last
 end type
