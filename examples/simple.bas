@@ -15,9 +15,6 @@ type PaintColor
     as long _color
 end type
 
-Entity.RegisterComponent("Location", new Location())
-Entity.RegisterComponent("Drawable", new Drawable())
-
 sub sys_setup(byval _app as any ptr, byval _ud as any ptr, byval _entities as any ptr, byval deltaTime as single)
     var app = GET_APP(_app)
     var player = app->AddEntity("Player")
@@ -87,6 +84,9 @@ sub input_handler(byval _app as any ptr, byval _ud as any ptr, byval _entities a
         _entity = entities->IteratorNext()
     wend
 end sub
+
+Entity.RegisterComponent("Location", new Location())
+Entity.RegisterComponent("Drawable", new Drawable())
 
 var app = new Application()
 
