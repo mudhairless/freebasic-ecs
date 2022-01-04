@@ -54,7 +54,7 @@ public property Application.LoggingLevel(byval ll as LogLevel)
 end property
 
 public sub Application._log(byval ll as LogLevel, byref msg as string)
-    if(this._loggingLevel = LogLevel.Off) then
+    if(this._loggingLevel = LogLevel.Off OR this.debug_channel < 0) then
         return
     end if
     var level = ""

@@ -29,7 +29,7 @@ sub sys_setup(byval _app as any ptr, byval _ud as any ptr, byval _entities as an
     var pc = new PaintColor
     pc->_color = &hFFFF00
     app->AddResource("PaintColor", pc, 0)
-
+    
     sleep 1,1
     screenres 640, 480, 32
 end sub
