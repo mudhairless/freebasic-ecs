@@ -9,20 +9,24 @@ type Entity extends Object
     public:
     declare destructor()
 
-    declare function AddComponent(byref c_name as const string) as Component ptr
+    declare function AddComponent(byref c_name as string) as Component ptr
     'declare function HasComponent(byref c_name as const string) as long
-    declare function GetComponent(byref c_name as const string) as Component ptr
-    declare sub RemoveComponent(byref c_name as const string)
+    declare function GetComponent(byref c_name as string) as Component ptr
+    declare sub RemoveComponent(byref c_name as string)
 
-    declare static sub RegisterComponent(byref c_name as const string, byval c as Component ptr)
+    declare static sub RegisterComponent(byref c_name as string, byval c as Component ptr)
 
     declare property Events() as EventSystem ptr
 
     _name as string
     refs as long
+    declare sub ResetIterator()
+    declare function IteratorNext() as Component ptr
     private:
     _events as EventSystem
-    _components(15) as Component ptr
+    _list as ComponentListItem ptr
+    _last as ComponentListItem ptr
+    _ptr as ComponentListItem ptr
     static _ComponentRegistry as ComponentRegistry
 end type
 

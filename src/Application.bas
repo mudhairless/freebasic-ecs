@@ -16,10 +16,12 @@ end constructor
 public destructor Application()
     delete this.all_resources
     delete this.all_entities
+    delete this.component_registry
     this._log(LogLevel.Debug, "Application Destroyed")
 end destructor
 
 private sub Application.init()
+    this.component_registry = new ComponentRegistry
     this.all_entities = new EntityList
     this.all_resources = new ResourceList
     this.systems = new SystemList
@@ -114,7 +116,7 @@ public sub Application.runApplication()
     var _next = this.systems->StartupIteratorNext()
     while(_next <> 0)    
             this._log(LogLevel.Debug, "Startup system: " & n)
-            _next->_call(@this, 0)
+            _next->_call(0)
             _next = this.systems->StartupIteratorNext()
             n += 1
     wend
@@ -138,7 +140,7 @@ public sub Application.runApplication()
         while(_next <> 0)
                 if((this.curTime - _next->last_run) > _next->minDelay) then
                     this._log(LogLevel.Debug, "Running system: " & n)
-                    _next->_call(@this, this.deltaTime)
+                    _next->_call(this.deltaTime)
                     _next->last_run = this.curTime
                 end if
                 _next = this.systems->IteratorNext()

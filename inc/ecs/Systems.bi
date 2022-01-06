@@ -3,7 +3,7 @@
 
 #include once "ecs/EntityList.bi"
 
-type SystemFunction as sub(byval _app as any ptr, byval _ud as any ptr, byval _data as any ptr, byval deltaTime as single)
+type SystemFunction as sub(byval _ud as any ptr, byval _data as any ptr, byval deltaTime as single)
 
 enum SystemType explicit
     SystemWithSearchFunction
@@ -23,7 +23,7 @@ type SystemWrapper
     as double last_run
     as SystemFunction _func
 
-    declare sub _call(byval app as any ptr, byval deltaTime as single)
+    declare sub _call(byval deltaTime as single)
 end type
 
 type SystemListItem

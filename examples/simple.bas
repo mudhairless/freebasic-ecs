@@ -15,8 +15,10 @@ type PaintColor
     as long _color
 end type
 
-sub sys_setup(byval _app as any ptr, byval _ud as any ptr, byval _entities as any ptr, byval deltaTime as single)
-    var app = GET_APP(_app)
+
+
+sub sys_setup(byval _ud as any ptr, byval _entities as any ptr, byval deltaTime as single)
+    var app = Application.GetInstance()
     var player = app->AddEntity("Player")
 
     var ploc = ADD_COMPONENT(player, Location)
@@ -34,8 +36,8 @@ sub sys_setup(byval _app as any ptr, byval _ud as any ptr, byval _entities as an
     screenres 640, 480, 32
 end sub
 
-sub drawable_system(byval _app as any ptr, byval _ud as any ptr, byval _entities as any ptr, byval deltaTime as single)
-    var app = GET_APP(_app)
+sub drawable_system(byval _ud as any ptr, byval _entities as any ptr, byval deltaTime as single)
+    var app = Application.GetInstance()
     var pc = GET_RESOURCE(app, PaintColor) 'shortcut when the resource name matches the type name
 
     screenlock
@@ -55,8 +57,8 @@ sub drawable_system(byval _app as any ptr, byval _ud as any ptr, byval _entities
     screenunlock
 end sub
 
-sub input_handler(byval _app as any ptr, byval _ud as any ptr, byval _entities as any ptr, byval deltaTime as single)
-    var app = GET_APP(_app)
+sub input_handler(byval _ud as any ptr, byval _entities as any ptr, byval deltaTime as single)
+    var app = Application.GetInstance()
     var entities = GET_ENTLIST(_entities)
     entities->ResetIterator()
     var _entity = entities->IteratorNext()
@@ -89,8 +91,8 @@ end sub
 var app = Application.GetInstance()
 app->loggingLevel = LogLevel.Debug
 
-Entity.RegisterComponent("Location", new Location())
-Entity.RegisterComponent("Drawable", new Drawable())
+app->component_registry->RegisterComponent("Location", new Location())
+app->component_registry->RegisterComponent("Drawable", new Drawable())
 
 app->systems->AddStartupSystem(@sys_setup, 0)
 app->systems->AddComponentSystem("Drawable", @drawable_system, 0)

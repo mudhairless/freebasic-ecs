@@ -1,22 +1,22 @@
 #include once "ecs/Systems.bi"
 #include once "ecs/Application.bi"
 
-sub SystemWrapper._call(byval app as any ptr, byval deltaTime as single)
+sub SystemWrapper._call(byval deltaTime as single)
     select case this._type
         case SystemType.SystemStartup:
-            this._func(app, this._user_data, 0, 0)
+            this._func(this._user_data, 0, 0)
 
         case SystemType.SystemWithSearchFunction:
-            var f_data = GET_APP(app)->all_entities->Search(this.search_function, this._user_data)
-            this._func(app, this._user_data, f_data, deltaTime)
+            var f_data = Application.GetInstance()->all_entities->Search(this.search_function, this._user_data)
+            this._func(this._user_data, f_data, deltaTime)
 
         case SystemType.SystemOfComponents:
-            var f_data = GET_APP(app)->all_entities->WithComponent(this.neededComponents)
-            this._func(app, this._user_data, f_data, deltaTime)
+            var f_data = Application.GetInstance()->all_entities->WithComponent(this.neededComponents)
+            this._func(this._user_data, f_data, deltaTime)
 
         case SystemType.SystemOfNamedEntities:
-            var f_data = GET_APP(app)->all_entities->FindAllEntities(this.namedEntities)
-            this._func(app, this._user_data, f_data, deltaTime)
+            var f_data = Application.GetInstance()->all_entities->FindAllEntities(this.namedEntities)
+            this._func(this._user_data, f_data, deltaTime)
 
     end select
 end sub

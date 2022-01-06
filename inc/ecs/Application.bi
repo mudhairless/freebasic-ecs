@@ -5,6 +5,7 @@
 #include once "ecs/Resource.bi"
 #include once "ecs/Systems.bi"
 #include once "ecs/Events.bi"
+#include once "ecs/ComponentRegistry.bi"
 
 enum LogLevel
     Off
@@ -34,8 +35,8 @@ type Application
     declare sub _log(byval ll as LogLevel, byref msg as string)
 
     as SystemList ptr systems
-
     as EntityList ptr all_entities
+    as ComponentRegistry ptr component_registry
 
     private:
     declare constructor()
@@ -45,6 +46,7 @@ type Application
     as double deltaTime
     as long exit_sentinel
     as EventSystem _events
+    
     as ResourceList ptr all_resources
     as long debug_channel
     as LogLevel _loggingLevel
