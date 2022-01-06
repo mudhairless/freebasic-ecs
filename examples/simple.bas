@@ -15,8 +15,6 @@ type PaintColor
     as long _color
 end type
 
-
-
 sub sys_setup(byval _ud as any ptr, byval _entities as any ptr, byval deltaTime as single)
     var app = Application.GetInstance()
     var player = app->AddEntity("Player")

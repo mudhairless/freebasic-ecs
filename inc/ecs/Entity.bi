@@ -14,8 +14,6 @@ type Entity extends Object
     declare function GetComponent(byref c_name as string) as Component ptr
     declare sub RemoveComponent(byref c_name as string)
 
-    declare static sub RegisterComponent(byref c_name as string, byval c as Component ptr)
-
     declare property Events() as EventSystem ptr
 
     _name as string
@@ -27,7 +25,6 @@ type Entity extends Object
     _list as ComponentListItem ptr
     _last as ComponentListItem ptr
     _ptr as ComponentListItem ptr
-    static _ComponentRegistry as ComponentRegistry
 end type
 
 #macro GET_COMPONENT (e, t) 
