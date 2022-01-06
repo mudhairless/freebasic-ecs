@@ -5,21 +5,18 @@
 type TestComponent extends Component
     as string _field1
     as long _field2
-    declare function create(byref cname as const string) as Component ptr
 end type
 
-function TestComponent.create(byref cname as const string) as Component ptr
+function TestComponent_create() as Component ptr
     var x = new TestComponent
-    x->cname = cname
+    x->cname = "TestComponent"
     return x
 end function
 
 var hasError = 0
 
 var test1 = new ComponentRegistry
-var register = new TestComponent
-register->_field2 = 32
-test1->RegisterComponent("TestComponent", register)
+test1->RegisterComponent("TestComponent", @TestComponent_create)
 var c = cast(TestComponent ptr, test1->GetComponent("TestComponent"))
 var c2 = cast(TestComponent ptr, test1->GetComponent("TestComponent"))
 var c4 = new TestComponent
@@ -29,30 +26,13 @@ if(c = 0) then
     print "Component not found"
 end if
 
-if(c = register) then
-    hasError = 2
-    print "retrieved component is registered component"
-end if
-
-c->_field1 = "test"
-c->_field2 = 32
-
-if(c->_field2 = register->_field2) then
-    hasError = 3
-    print "instance1 field matches registered component"
-end if
-
-if(c2->_field2 = register->_field2) then
-    hasError = 8
-    print "instance2 field matches registered component"
-end if
-
 if(c = c2) then
     hasError = 7
     print "both instances are the same object"
 end if
 
 delete c
+delete c2
 
 test1->ResetIterator()
 var _next = test1->IteratorNext()

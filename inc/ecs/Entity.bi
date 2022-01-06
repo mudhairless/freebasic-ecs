@@ -18,13 +18,10 @@ type Entity extends Object
 
     _name as string
     refs as long
-    declare sub ResetIterator()
-    declare function IteratorNext() as Component ptr
+    
     private:
     _events as EventSystem
-    _list as ComponentListItem ptr
-    _last as ComponentListItem ptr
-    _ptr as ComponentListItem ptr
+    _components as ComponentList
 end type
 
 #macro GET_COMPONENT (e, t) 

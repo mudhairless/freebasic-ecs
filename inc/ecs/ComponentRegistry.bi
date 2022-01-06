@@ -3,28 +3,31 @@
 
 #include once "ecs/Component.bi"
 
-type ComponentListItem
+type ComponentCreationFunction as function() as Component ptr
+
+type ComponentRegistryListItem
     public:
-    as Component ptr _component
-    as ComponentListItem ptr _next
+    as string cname
+    as ComponentCreationFunction _component
+    as ComponentRegistryListItem ptr _next
     
     declare destructor()
 end type
 
 type ComponentRegistry
     public:
-    declare sub RegisterComponent(byref cname as string, byval comp as Component ptr)
+    declare sub RegisterComponent(byref cname as string, byval comp as ComponentCreationFunction)
     declare function GetComponent(byref cname as string) as Component ptr
 
     declare sub ResetIterator()
-    declare function IteratorNext() as Component ptr
+    declare function IteratorNext() as ComponentRegistryListItem ptr
 
     declare destructor()
 
     private:
-    _list as ComponentListItem ptr
-    _last as ComponentListItem ptr
-    _ptr  as ComponentListItem ptr
+    _list as ComponentRegistryListItem ptr
+    _last as ComponentRegistryListItem ptr
+    _ptr  as ComponentRegistryListItem ptr
 end type
 
 #endif

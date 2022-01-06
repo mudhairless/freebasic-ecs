@@ -26,7 +26,6 @@ private sub Application.init()
     this.all_resources = new ResourceList
     this.systems = new SystemList
     this.exit_sentinel = 0
-    this._events.SetApplication(@this)
     this._events.AddEvent("ApplicationExit")
     this.debug_channel = -1
 end sub
@@ -89,7 +88,6 @@ public function Application.AddEntity(byref _name as string) as Entity ptr
     this._log(LogLevel.Debug, "Adding Entity: " & _name)
     dim as Entity ptr e = new Entity
     e->_name = _name
-    e->Events->SetApplication(@this)
     e->Events->SetSource(e)
     this.all_entities->AddEntity(e)
     return e

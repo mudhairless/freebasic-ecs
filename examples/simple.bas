@@ -15,6 +15,18 @@ type PaintColor
     as long _color
 end type
 
+function location_component_create() as Component ptr
+    var ret = new Location
+    ret->cname = "Location"
+    return ret
+end function
+
+function drawable_component_create() as Component ptr
+    var ret = new Drawable
+    ret->cname = "Drawable"
+    return ret
+end function
+
 sub sys_setup(byval _ud as any ptr, byval _entities as any ptr, byval deltaTime as single)
     var app = Application.GetInstance()
     var player = app->AddEntity("Player")
@@ -89,8 +101,8 @@ end sub
 var app = Application.GetInstance()
 app->loggingLevel = LogLevel.Debug
 
-app->component_registry->RegisterComponent("Location", new Location())
-app->component_registry->RegisterComponent("Drawable", new Drawable())
+app->component_registry->RegisterComponent("Location", @location_component_create)
+app->component_registry->RegisterComponent("Drawable", @drawable_component_create)
 
 app->systems->AddStartupSystem(@sys_setup, 0)
 app->systems->AddComponentSystem("Drawable", @drawable_system, 0)

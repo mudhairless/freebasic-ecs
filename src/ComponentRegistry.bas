@@ -1,8 +1,8 @@
 #include once "ecs/ComponentRegistry.bi"
 #include once "ecs/Application.bi"
 
-public destructor ComponentListItem()
-    delete this._component
+public destructor ComponentRegistryListItem()
+    
 end destructor
 
 public destructor ComponentRegistry()
@@ -23,7 +23,7 @@ public sub ComponentRegistry.ResetIterator()
     this._ptr = 0
 end sub
 
-public function ComponentRegistry.IteratorNext() as Component ptr
+public function ComponentRegistry.IteratorNext() as ComponentRegistryListItem ptr
     if(this._ptr = 0) then  
         this._ptr = this._list
     else
@@ -31,7 +31,7 @@ public function ComponentRegistry.IteratorNext() as Component ptr
     end if
 
     if(this._ptr <> 0) then
-        return this._ptr->_component
+        return this._ptr
     end if
 
     return 0
@@ -43,7 +43,7 @@ function ComponentRegistry.GetComponent(byref cname as string) as Component ptr
     while(_next <> 0)
         if(_next->cname = cname) then
             Application.GetInstance()->_log(LogLevel.Debug, "Found instance of " & cname & " component")
-            return _next->create(cname)
+            return _next->_component()
         end if
         _next = this.IteratorNext()
     wend
@@ -51,33 +51,25 @@ function ComponentRegistry.GetComponent(byref cname as string) as Component ptr
     return 0
 end function
 
-sub ComponentRegistry.RegisterComponent(byref cname as string, byval c as Component ptr)
+sub ComponentRegistry.RegisterComponent(byref cname as string, byval c as ComponentCreationFunction)
     
     var existing = this.GetComponent(cname)
     if(existing = 0) then
-        if(c->cname <> cname) then
-            c->cname = cname
-        end if
         Application.GetInstance()->_log(LogLevel.Debug, "Registering instance of " & cname & " component")
         if(this._last <> 0) then
-            Application.GetInstance()->_log(LogLevel.Debug, "List exists, adding component")
-            var x = new ComponentListItem
+            Application.GetInstance()->_log(LogLevel.Debug, "Registry exists, adding component")
+            var x = new ComponentRegistryListItem
+            x->cname = cname
             x->_component = c
             this._last->_next = x
             this._last = x
         else
-            Application.GetInstance()->_log(LogLevel.Debug, "New Component list")
-            var x = new ComponentListItem
+            Application.GetInstance()->_log(LogLevel.Debug, "Creating Component Registry")
+            var x = new ComponentRegistryListItem
+            x->cname = cname
             x->_component = c
             this._list = x
             this._last = x
         end if
     end if
-
-    this.ResetIterator()
-    var _next = this.IteratorNext()
-    while(_next <> 0)
-        Application.GetInstance()->_log(LogLevel.Debug, "Registered Component: " & _next->cname)
-        _next = this.IteratorNext()
-    wend
 end sub

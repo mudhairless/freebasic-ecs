@@ -7,13 +7,68 @@ constructor Component (byref cname as const string)
     this.cname = cname
 end constructor
 
-function Component.create(byref cname as const string) as Component ptr
-    var x = new Component(cname)
-    return x
-end function
-
 sub Component.register(byval _e as any ptr)
 end sub
 
 sub Component.deregister(byval _e as any ptr)
 end sub
+
+destructor ComponentListItem()
+    delete this._component
+end destructor
+
+sub ComponentList.RemoveComponent(byref cname as string)
+    var _next = this._list
+    dim as ComponentListItem ptr _last = 0
+    while (_next <> 0)
+        if(_next->_component->cname = cname) then
+            if(_last = 0) then
+                this._list = _next->_next
+                if(this._last->_component->cname = cname) then
+                    this._last = _next->_next
+                end if
+            else
+                _last->_next = _next->_next
+            end if
+            delete _next
+            return
+        end if
+        _last = _next
+        _next = _next->_next
+    wend
+end sub
+
+sub ComponentList.AddComponent(byval c as Component ptr)
+    if(this._last <> 0) then
+        var x = new ComponentListItem
+        x->_component = c
+        this._last->_next = x
+        this._last = x
+    else
+        var x = new ComponentListItem
+        x->_component = c
+        this._list = x
+        this._last = x
+    end if
+end sub
+
+sub ComponentList.ResetIterator()  
+    this._ptr = 0
+end sub
+
+function ComponentList.IteratorNext() as Component ptr
+    if(this._ptr = 0) then  
+        this._ptr = this._list
+    else
+        this._ptr = this._ptr->_next
+    end if
+
+    if(this._ptr <> 0) then
+        return this._ptr->_component
+    end if
+
+    return 0
+end function
+
+destructor ComponentList()
+end destructor

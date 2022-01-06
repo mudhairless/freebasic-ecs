@@ -9,10 +9,10 @@ property EventHandler.EventName() as string
     return this._EventName
 end property
     
-function EventHandler.trigger(byval _app as any ptr, byval src as any ptr, byval _event_data as any ptr) as long
+function EventHandler.trigger(byval src as any ptr, byval _event_data as any ptr) as long
     for a as long = 0 to ubound(this._listeners)
         if(this._listeners(a) <> 0) then
-            var ret = (this._listeners(a)) (_app, src, _event_data)
+            var ret = (this._listeners(a)) (src, _event_data)
             if(ret = 0) then
                 return 0
             end if
@@ -82,7 +82,7 @@ function EventSystem.TriggerEvent(byref ev_name as string, byval ev_data as any 
     var handler = this.GetEventHandler(ev_name)
     if(handler <> 0) then
         app->_log(LogLevel.Debug, "Triggering Event: " & ev_name)
-        return handler->trigger(this._app, this._src, ev_data)
+        return handler->trigger(this._src, ev_data)
     end if
     app->_log(LogLevel.Errors, "Event: " & ev_name & " triggered but not setup")
     return 1
@@ -93,15 +93,11 @@ function EventSystem.TriggerEvent(byref ev_name as string, byval src as any ptr,
     var handler = this.GetEventHandler(ev_name)
     if(handler <> 0) then
         app->_log(LogLevel.Debug, "Triggering Event: " & ev_name)
-        return handler->trigger(this._app, src, ev_data)
+        return handler->trigger(src, ev_data)
     end if
     app->_log(LogLevel.Errors, "Event: " & ev_name & " triggered but not setup")
     return 1
 end function
-
-sub EventSystem.SetApplication(byval a as any ptr)
-    this._app = a
-end sub
 
 sub EventSystem.SetSource(byval s as any ptr)
     this._src = s

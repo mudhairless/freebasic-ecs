@@ -10,8 +10,7 @@ public constructor Transform2D()
     Base("Transform2D")
 end constructor
 
-public function Transform2D.create(byref cname as const string) as Component ptr
+public function ecs_transform2d_component_create() as Component ptr
     var x = new Transform2D()
-    x->cname = cname
     return cast(Component ptr, x)
 end function
