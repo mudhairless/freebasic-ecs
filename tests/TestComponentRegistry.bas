@@ -39,7 +39,12 @@ c->_field2 = 32
 
 if(c->_field2 = register->_field2) then
     hasError = 3
-    print "instance field matches registered component"
+    print "instance1 field matches registered component"
+end if
+
+if(c2->_field2 = register->_field2) then
+    hasError = 8
+    print "instance2 field matches registered component"
 end if
 
 if(c = c2) then
