@@ -19,6 +19,8 @@ type ComponentRegistry
     declare sub ResetIterator()
     declare function IteratorNext() as Component ptr
 
+    declare destructor()
+
     private:
     _list as ComponentListItem ptr
     _last as ComponentListItem ptr

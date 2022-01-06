@@ -5,6 +5,20 @@ public destructor ComponentListItem()
     delete this._component
 end destructor
 
+public destructor ComponentRegistry()
+    Application.GetInstance()->_log(LogLevel.Debug, "Destroying Component Registry")
+    if(this._list <> 0) then
+        this._last = 0
+        this._ptr = 0
+        var _next = this._list
+        while(_next <> 0)
+            var cur = _next
+            _next = cur->_next
+            delete cur
+        wend
+    end if
+end destructor
+
 public sub ComponentRegistry.ResetIterator()
     this._ptr = 0
 end sub
