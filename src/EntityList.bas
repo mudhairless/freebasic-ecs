@@ -121,9 +121,9 @@ end function
 
 public destructor EntityList()
     var _next = this._list
-    do
+    while(_next <> 0)
         var _cur = _next
         _next = _next->_next
         delete _cur
-    loop until _next = 0
+    wend
 end destructor
