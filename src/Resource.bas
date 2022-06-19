@@ -1,3 +1,4 @@
+#include once "ecs/common.bi"
 #include once "ecs/Resource.bi"
 
 constructor ResourceListItem(byval r as Resource ptr)
@@ -20,7 +21,7 @@ destructor ResourceList()
         var _cur = _next
         _next = _next->_next
         delete _cur
-    loop until _next = 0
+    loop until _next = NULL
 end destructor
 
 sub ResourceList.AddResource(byref rn as string, byval rd as any ptr, byval destroy as ResourceDestructor)
@@ -30,7 +31,7 @@ sub ResourceList.AddResource(byref rn as string, byval rd as any ptr, byval dest
     x->resource_destroy = destroy
 
     var li = new ResourceListItem(x)
-    if(this._last = 0) then ' start of list
+    if(this._last = NULL) then ' start of list
         this._list = li
         this._last = li
     else
@@ -47,7 +48,7 @@ function ResourceList.FindResource(byref rn as string) as any ptr
             return _cur->_resource->resource_data
         end if
         _next = _next->_next
-    loop until _next = 0
-    return 0
+    loop until _next = NULL
+    return NULL
 end function
 

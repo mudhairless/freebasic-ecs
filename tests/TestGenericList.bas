@@ -1,3 +1,4 @@
+#include once "ecs/common.bi"
 #include once "ecs/GenericList.bi"
 #inclib "ecs"
 

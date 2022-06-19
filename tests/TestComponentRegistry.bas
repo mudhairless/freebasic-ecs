@@ -1,3 +1,4 @@
+#include once "ecs/common.bi"
 #include once "ecs/Component.bi"
 #include once "ecs/ComponentRegistry.bi"
 #inclib "ecs"
@@ -21,7 +22,7 @@ var c = cast(TestComponent ptr, test1->GetComponent("TestComponent"))
 var c2 = cast(TestComponent ptr, test1->GetComponent("TestComponent"))
 var c4 = new TestComponent
 
-if(c = 0) then
+if(c = NULL) then
     hasError = 1
     print "Component not found"
 end if
@@ -37,7 +38,7 @@ delete c2
 test1->ResetIterator()
 var _next = test1->IteratorNext()
 var cnt = 0
-while(_next <> 0)
+while(_next <> NULL)
     cnt += 1
     _next = test1->IteratorNext()
 wend
@@ -49,7 +50,7 @@ end if
 
 var c3 = test1->GetComponent("DoesNotExist")
 
-if(c3 <> 0) then
+if(c3 <> NULL) then
     hasError = 5
     delete c3
     print "error did not return null for invalid component"

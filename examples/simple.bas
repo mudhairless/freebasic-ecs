@@ -55,10 +55,10 @@ sub drawable_system(byval _ud as any ptr, byval _entities as any ptr, byval delt
     var entities = GET_ENTLIST(_entities)
     entities->ResetIterator()
     var _entity = entities->IteratorNext()
-    while(_entity <> 0)
+    while(_entity <> NULL)
         var _drawable = GET_COMPONENT(_entity, Drawable)
         var _loc = GET_COMPONENT(_entity, Location)
-        if(_loc <> 0 and _drawable <> 0) then
+        if(_loc <> NULL and _drawable <> NULL) then
             circle (clng(_loc->x), clng(_loc->y)), _drawable->r, pc->_color
             paint (clng(_loc->x), clng(_loc->y)), pc->_color, pc->_color
         end if
@@ -72,10 +72,10 @@ sub input_handler(byval _ud as any ptr, byval _entities as any ptr, byval deltaT
     var entities = GET_ENTLIST(_entities)
     entities->ResetIterator()
     var _entity = entities->IteratorNext()
-    while(_entity <> 0)
+    while(_entity <> NULL)
         var _drawable = GET_COMPONENT(_entity, Drawable)
         var _loc = GET_COMPONENT(_entity, Location)
-        if(_loc <> 0 and _drawable <> 0) then
+        if(_loc <> NULL and _drawable <> NULL) then
             If MultiKey(SC_LEFT ) And _loc->x >   0 Then _loc->x = _loc->x - (150 * deltaTime)
             If MultiKey(SC_RIGHT) And _loc->x < 640 Then _loc-> x = _loc->x + (150 * deltaTime)
             If MultiKey(SC_UP   ) And _loc->y >   0 Then _loc->y = _loc->y - (150 * deltaTime)
@@ -104,8 +104,8 @@ app->loggingLevel = LogLevel.Debug
 app->component_registry->RegisterComponent("Location", @location_component_create)
 app->component_registry->RegisterComponent("Drawable", @drawable_component_create)
 
-app->systems->AddStartupSystem(@sys_setup, 0)
-app->systems->AddComponentSystem("Drawable", @drawable_system, 0)
-app->systems->AddEntitySystem("Player", @input_handler, 0)
+app->systems->AddStartupSystem(@sys_setup, NULL)
+app->systems->AddComponentSystem("Drawable", @drawable_system, NULL)
+app->systems->AddEntitySystem("Player", @input_handler, NULL)
 
 app->runApplication()

@@ -1,9 +1,10 @@
+#include once "ecs/common.bi"
 #include once "ecs/Application.bi"
 
-dim shared _app_instance as Application ptr = 0
+dim shared _app_instance as Application ptr = NULL
 
 public static function Application.GetInstance() as Application ptr
-    if(_app_instance <> 0) then return _app_instance
+    if(_app_instance <> NULL) then return _app_instance
     _app_instance = new Application()
     _app_instance->init()
     return _app_instance
@@ -25,7 +26,7 @@ private sub Application.init()
     this.all_entities = new EntityList
     this.all_resources = new ResourceList
     this.systems = new SystemList
-    this.exit_sentinel = 0
+    this.exit_sentinel = FALSE
     this._events.AddEvent("ApplicationExit")
     this.debug_channel = -1
 end sub
@@ -103,7 +104,7 @@ public function Application.GetResource(byref rn as string) as any ptr
 end function
 
 public sub Application.runApplication()
-    this.exit_sentinel = 0
+    this.exit_sentinel = FALSE
     
     var n = 0
     this._log(LogLevel.Info, "Starting application...")
@@ -112,7 +113,7 @@ public sub Application.runApplication()
     this._log(LogLevel.Info, "Running startup systems...")
     this.systems->ResetStartupIterator()
     var _next = this.systems->StartupIteratorNext()
-    while(_next <> 0)    
+    while(_next <> NULL)    
             this._log(LogLevel.Debug, "Startup system: " & n)
             _next->_call(0)
             _next = this.systems->StartupIteratorNext()
@@ -126,7 +127,7 @@ public sub Application.runApplication()
     this.deltaTime = 0f
    
    this._log(LogLevel.Info, "Starting main loop...")
-    while(this.exit_sentinel = 0)
+    while(this.exit_sentinel = FALSE)
         this.last_time = this.curTime
         this.curTime = timer
         this.deltaTime = this.curTime - this.last_time
@@ -135,7 +136,7 @@ public sub Application.runApplication()
         _next = this.systems->IteratorNext()
         this._log(LogLevel.Debug, "Running systems")
         n = 0
-        while(_next <> 0)
+        while(_next <> NULL)
                 if((this.curTime - _next->last_run) > _next->minDelay) then
                     this._log(LogLevel.Debug, "Running system: " & n)
                     _next->_call(this.deltaTime)
@@ -153,6 +154,6 @@ end sub
 
 public sub Application.exitApplication()
     this._log(LogLevel.Info, "Received Application Exit Request")
-    var doExit = this._events.TriggerEvent("ApplicationExit", 0)
-    this.exit_sentinel = iif(doExit <> 0, 1, 0)
+    var doExit = this._events.TriggerEvent("ApplicationExit", NULL)
+    this.exit_sentinel = iif(doExit <> FALSE, TRUE, FALSE)
 end sub

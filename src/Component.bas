@@ -1,3 +1,4 @@
+#include once "ecs/common.bi"
 #include once "ecs/Component.bi"
 
 constructor Component()
@@ -19,10 +20,10 @@ end destructor
 
 sub ComponentList.RemoveComponent(byref cname as string)
     var _next = this._list
-    dim as ComponentListItem ptr _last = 0
-    while (_next <> 0)
+    dim as ComponentListItem ptr _last = NULL
+    while (_next <> NULL)
         if(_next->_component->cname = cname) then
-            if(_last = 0) then
+            if(_last = NULL) then
                 this._list = _next->_next
                 if(this._last->_component->cname = cname) then
                     this._last = _next->_next
@@ -39,7 +40,7 @@ sub ComponentList.RemoveComponent(byref cname as string)
 end sub
 
 sub ComponentList.AddComponent(byval c as Component ptr)
-    if(this._last <> 0) then
+    if(this._last <> NULL) then
         var x = new ComponentListItem
         x->_component = c
         this._last->_next = x
@@ -53,21 +54,21 @@ sub ComponentList.AddComponent(byval c as Component ptr)
 end sub
 
 sub ComponentList.ResetIterator()  
-    this._ptr = 0
+    this._ptr = NULL
 end sub
 
 function ComponentList.IteratorNext() as Component ptr
-    if(this._ptr = 0) then  
+    if(this._ptr = NULL) then  
         this._ptr = this._list
     else
         this._ptr = this._ptr->_next
     end if
 
-    if(this._ptr <> 0) then
+    if(this._ptr <> NULL) then
         return this._ptr->_component
     end if
 
-    return 0
+    return NULL
 end function
 
 destructor ComponentList()
