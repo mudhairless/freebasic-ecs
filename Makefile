@@ -8,14 +8,16 @@ all: lib/libecs.a lib/libecs-components.a examples tests
 	$(COMPILER) $(COMPILE_OPTS) -c $< -o $@
 
 tests: tests/TestComponentRegistry.exe tests/TestGenericList.exe
+	@echo ""
+	@echo "Running Tests..."
+	@tests/TestComponentRegistry
+	@tests/TestGenericList
 
 tests/TestComponentRegistry.exe: lib/libecs.a tests/TestComponentRegistry.bas src/ComponentRegistry.o
 	$(COMPILER) $(COMPILE_OPTS) -p lib tests/TestComponentRegistry.bas
-	tests/TestComponentRegistry
 
 tests/TestGenericList.exe: lib/libecs.a tests/TestGenericList.bas src/GenericList.o
 	$(COMPILER) $(COMPILE_OPTS) -p lib tests/TestGenericList.bas
-	tests/TestGenericList
 
 examples: examples/simple.exe
 
