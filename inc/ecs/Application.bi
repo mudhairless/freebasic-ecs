@@ -44,7 +44,7 @@ type Application
     as double last_time
     as double curTime
     as double deltaTime
-    as long exit_sentinel
+    as boolean exit_sentinel
     as EventSystem _events
     
     as ResourceList ptr all_resources

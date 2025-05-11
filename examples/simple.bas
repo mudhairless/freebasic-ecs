@@ -99,7 +99,7 @@ sub input_handler(byval _ud as any ptr, byval _entities as any ptr, byval deltaT
 end sub
 
 var app = Application.GetInstance()
-app->loggingLevel = LogLevel.Debug
+app->LoggingLevel = LogLevel.Info
 
 app->component_registry->RegisterComponent("Location", @location_component_create)
 app->component_registry->RegisterComponent("Drawable", @drawable_component_create)

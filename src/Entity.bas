@@ -25,6 +25,18 @@ function Entity.AddComponent(byref c_name as string) as Component ptr
     return 0
 end function
 
+function Entity.HasComponent(byref c_name as string) as boolean
+    this._components.ResetIterator()
+    var _next = this._components.IteratorNext()
+    while(_next <> NULL)
+        if(_next->cname = c_name) then
+            return TRUE
+        end if
+        _next = this._components.IteratorNext()
+    wend
+    return FALSE
+end function
+
 function Entity.GetComponent(byref c_name as string) as Component ptr
     this._components.ResetIterator()
     var _next = this._components.IteratorNext()

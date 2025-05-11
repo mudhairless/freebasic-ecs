@@ -58,7 +58,7 @@ public function EntityList.FindEntity(byref ename as string) as Entity ptr
     return NULL
 end function
 
-private function EntityByName(byval e as Entity ptr, byval c as any ptr) as long
+private function EntityByName(byval e as Entity ptr, byval c as any ptr) as boolean
     if(e->_name = (*(cast(zstring ptr, c)))) then
         return TRUE
     end if
@@ -98,7 +98,7 @@ public function EntityList.Search(byval searchFunction as EntityListSearchFuncti
     
     do
         if(_next <> NULL) then
-            if(searchFunction(_next, _data) <> TRUE) then
+            if(searchFunction(_next, _data) = TRUE) then
                 outList->AddEntity(_next)
             end if
             _next = this.IteratorNext()
@@ -108,12 +108,43 @@ public function EntityList.Search(byval searchFunction as EntityListSearchFuncti
     return outList
 end function
 
-private function EntityWithComponent(byval e as Entity ptr, byval c as any ptr) as long
-    var x = e->GetComponent(*(cast(zstring ptr, c)))
-    if(x <> NULL) then
-        return TRUE
+public function EntityList.count() as uinteger
+    dim as uinteger cnt = 0
+    this.ResetIterator()
+    var _next = this.IteratorNext()
+    while (_next <> NULL)
+        cnt += 1
+        _next = this.IteratorNext()
+    wend
+    return cnt
+end function
+
+private function EntityWithComponent(byval e as Entity ptr, byval c as any ptr) as boolean
+    var compList = *(cast(zstring ptr, c))
+    var nextPipe = instr(compList, "|")
+    
+    if (nextPipe = 0) then
+        ' just one component named
+        return e->HasComponent(compList)
+        
+    else 
+        ' pipe seperated component list, must match all
+        var found = TRUE
+        var lastPipe = 1
+        while(found = true ANDALSO nextPipe <> 0)
+            var compName = mid(compList, lastPipe, nextPipe - lastPipe)
+            found = e->HasComponent(compName)
+
+            lastPipe = nextPipe+1
+            nextPipe = instr(nextPipe+1, compList, "|")
+        wend
+        if (found = true) then
+            var lastCompName = mid(compList, lastPipe)
+            found = e->HasComponent(lastCompName)
+        end if
+
+        return found
     end if
-    return FALSE
 end function
 
 public function EntityList.WithComponent(byref c as string) as EntityList ptr

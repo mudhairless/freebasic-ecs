@@ -10,7 +10,7 @@ property EventHandler.EventName() as string
     return this._EventName
 end property
     
-function EventHandler.trigger(byval src as any ptr, byval _event_data as any ptr) as long
+function EventHandler.trigger(byval src as any ptr, byval _event_data as any ptr) as boolean
     for a as long = 0 to ubound(this._listeners)
         if(this._listeners(a) <> NULL) then
             var ret = (this._listeners(a)) (src, _event_data)
@@ -22,7 +22,7 @@ function EventHandler.trigger(byval src as any ptr, byval _event_data as any ptr
     return TRUE
 end function
 
-function EventHandler.addListener(byval f as EventHandlerMethod) as long
+function EventHandler.addListener(byval f as EventHandlerMethod) as boolean
     for a as long = 0 to ubound(this._listeners)
         if(this._listeners(a) = FALSE) then 
             this._listeners(a) = f
@@ -78,7 +78,7 @@ sub EventSystem.AddEvent(byref ev_name as string)
     end if
 end sub
 
-function EventSystem.TriggerEvent(byref ev_name as string, byval ev_data as any ptr) as long
+function EventSystem.TriggerEvent(byref ev_name as string, byval ev_data as any ptr) as boolean
     var app = Application.GetInstance()
     var handler = this.GetEventHandler(ev_name)
     if(handler <> NULL) then
@@ -89,7 +89,7 @@ function EventSystem.TriggerEvent(byref ev_name as string, byval ev_data as any 
     return TRUE
 end function
 
-function EventSystem.TriggerEvent(byref ev_name as string, byval src as any ptr, byval ev_data as any ptr) as long
+function EventSystem.TriggerEvent(byref ev_name as string, byval src as any ptr, byval ev_data as any ptr) as boolean
     var app = Application.GetInstance()
     var handler = this.GetEventHandler(ev_name)
     if(handler <> NULL) then
@@ -104,7 +104,7 @@ sub EventSystem.SetSource(byval s as any ptr)
     this._src = s
 end sub
 
-function EventSystem.AddListener(byref ev_name as string, byval f as EventHandlerMethod) as long
+function EventSystem.AddListener(byref ev_name as string, byval f as EventHandlerMethod) as boolean
     var app = Application.GetInstance()
     var handler = this.GetEventHandler(ev_name)
     if(handler <> NULL) then

@@ -8,6 +8,7 @@ type Component extends Object
         declare constructor ()
         declare constructor (byref cname as const string)
         
+        declare virtual destructor()
         declare virtual sub register(byval _entity as any ptr)
         declare virtual sub deregister(byval _entity as any ptr)
 end type

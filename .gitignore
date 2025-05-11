@@ -35,3 +35,6 @@
 *.idb
 *.pdb
 *.log
+
+# Build info
+buildreport.txt

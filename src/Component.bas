@@ -8,6 +8,9 @@ constructor Component (byref cname as const string)
     this.cname = cname
 end constructor
 
+destructor Component()
+end destructor
+
 sub Component.register(byval _e as any ptr)
 end sub
 

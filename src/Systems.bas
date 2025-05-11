@@ -5,7 +5,7 @@
 sub SystemWrapper._call(byval deltaTime as single)
     select case this._type
         case SystemType.SystemStartup:
-            this._func(this._user_data, NULL, NULL)
+            this._func(this._user_data, NULL, 0)
 
         case SystemType.SystemWithSearchFunction:
             var f_data = Application.GetInstance()->all_entities->Search(this.search_function, this._user_data)

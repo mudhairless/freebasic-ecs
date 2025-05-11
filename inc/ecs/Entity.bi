@@ -10,7 +10,7 @@ type Entity extends Object
     declare destructor()
 
     declare function AddComponent(byref c_name as string) as Component ptr
-    'declare function HasComponent(byref c_name as const string) as long
+    declare function HasComponent(byref c_name as string) as boolean
     declare function GetComponent(byref c_name as string) as Component ptr
     declare sub RemoveComponent(byref c_name as string)
 

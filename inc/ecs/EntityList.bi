@@ -10,7 +10,7 @@ type EntityListItem
     declare constructor(byval e as Entity ptr)
 end type
 
-type EntityListSearchFunction as function(byval e as Entity ptr, byval d as any ptr) as long
+type EntityListSearchFunction as function(byval e as Entity ptr, byval d as any ptr) as boolean
 
 type EntityList
     public:
@@ -20,6 +20,7 @@ type EntityList
     declare function WithComponent(byref c as string) as EntityList ptr
     declare sub RemoveEntity(byval e as Entity ptr)
     declare sub AddEntity(byval e as Entity ptr)
+    declare function count() as uinteger
     declare destructor()
 
     declare sub ResetIterator()

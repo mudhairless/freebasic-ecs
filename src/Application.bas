@@ -11,7 +11,7 @@ public static function Application.GetInstance() as Application ptr
 end function
 
 private constructor Application()
-    
+    this._loggingLevel = LogLevel.Off
 end constructor
 
 public destructor Application()
@@ -138,7 +138,17 @@ public sub Application.runApplication()
         n = 0
         while(_next <> NULL)
                 if((this.curTime - _next->last_run) > _next->minDelay) then
-                    this._log(LogLevel.Debug, "Running system: " & n)
+                    select case _next->_type
+                    case SystemType.SystemStartup
+                        this._log(LogLevel.Debug, "Running Startup System " & n)
+                    case SystemType.SystemOfComponents
+                        this._log(LogLevel.Debug, "Running component system( " & n & ") " & _next->neededComponents)
+                    case SystemType.SystemOfNamedEntities
+                        this._log(LogLevel.Debug, "Running entity system(" & n & ") " & _next->namedEntities)
+                    case else
+                        this._log(LogLevel.Errors, "Unknown System at " & n)
+                    end select
+                    
                     _next->_call(this.deltaTime)
                     _next->last_run = this.curTime
                 end if
