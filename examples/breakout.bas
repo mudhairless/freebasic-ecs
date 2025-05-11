@@ -39,7 +39,7 @@ function create_brick_entity(byval x as single, byval y as single) as Entity ptr
     var brick = new Entity
     brick->_name = "Brick"
     
-    var transform = cast(Transform2D ptr, brick->AddCopmonent("Transform2D"))
+    var transform = cast(Transform2D ptr, brick->AddComponent("Transform2D"))
     transform->x = x
     transform->y = y
 
